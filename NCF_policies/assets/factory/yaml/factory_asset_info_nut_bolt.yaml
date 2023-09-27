@@ -1,0 +1,39 @@
+mug_cupholder:
+    obj: 
+        mesh_path: 'ncf_mug_cupholder/obj_assets/1/obj_collision.obj'
+        pointcloud_path: 'ncf_mug_cupholder/obj_assets/1/obj_pointcloud.npy'
+        shape_code_path: 'ncf_mug_cupholder/obj_assets/1/obj_emb.npy'
+        urdf_path: 'obj_1'
+        mesh_scale: 1.0
+        width_min: 0.08
+        width_max: 0.10
+        height: 0.035
+        flat_length: 0.0410    
+    cupholder:
+        urdf_path: 'ncf_cupholder'
+        width: 0.195
+        # head_height: 0.104
+        head_height: 0.0166
+        shank_length: 0.0
+    thread_pitch: 0.0
+
+bowl_dishrack:
+    obj: 
+        mesh_path: 'ncf_mug_cupholder/obj_assets/16/obj_collision.obj'
+        pointcloud_path: 'ncf_mug_cupholder/obj_assets/16/obj_pointcloud.npy'
+        shape_code_path: 'ncf_mug_cupholder/obj_assets/16/obj_emb.npy'
+        urdf_path: 'obj_16'
+        mesh_scale: 1.0
+        width_min: 0.04
+        width_max: 0.05
+        height: 0.10
+        flat_length: 0.10
+    cupholder:
+        urdf_path: 'ncf_dishrack'
+        width: 0.195
+        # head_height: 0.104
+        head_height: 0.0166
+        shank_length: 0.0
+    thread_pitch: 0.0
+
+

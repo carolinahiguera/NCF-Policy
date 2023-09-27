@@ -1,0 +1,29 @@
+defaults:
+  - NCFTaskMugCupholder
+  - _self_
+
+name: NCFTaskBowlDishrack
+
+randomize:
+  franka_arm_initial_dof_pos: [0.00871, 0.2893, -0.1189, -1.4630, 0.0594,  1.5968, 1.0311]
+  # franka_arm_initial_dof_pos: [0.00871, 0.2893, 0.0891, -1.5554, -0.7,  1.7708, 0.9666]
+  fingertip_midpoint_pos_noise: [ 0.02, 0.02, 0.0 ]  # noise on fingertip pos
+  fingertip_midpoint_rot_noise: [ 0.0, 0.0, 0.0 ]  # noise on rotation
+  nut_noise_pos_in_gripper: [ 0.0, 0.0, 0.01 ]  # noise on nut position within gripper
+  nut_noise_rot_in_gripper: 0.17  # noise on nut rotation within gripper
+
+ncf:
+  checkpoint_vae: "checkpoints_all/digit_vae/digit_vae_mugs.ckpt"
+  checkpoint_ncf: "checkpoints_all/ncf"
+  checkpoint_ndf: "checkpoints_all/ndf.pth"
+
+  path_mesh_object: "NCF_policies/assets/factory/mesh/ncf_mug_cupholder/obj_assets/16/obj_collision.obj"
+  path_pointcloud_object: "NCF_policies/assets/factory/mesh/ncf_mug_cupholder/obj_assets/16/obj_pointcloud.npy"
+  path_mesh_dishrack: "NCF_policies/assets/factory/mesh/ncf_mug_cupholder/dishrack/dishrack.obj"
+  path_ndf_code_object: "NCF_policies/assets/factory/mesh/ncf_mug_cupholder/obj_assets/16/obj_ndf_code.npy"
+
+
+  # path_mesh_object: "/private/home/carohiguera/NCF_RL/NCFgym/assets/factory/mesh/ncf_mug_cupholder/obj_assets/16/obj_collision.obj"
+  # path_pointcloud_object: "/private/home/carohiguera/NCF_RL/NCFgym/assets/factory/mesh/ncf_mug_cupholder/obj_assets/16/obj_pointcloud.npy"
+  # path_mesh_cupholder: "/private/home/carohiguera/NCF_RL/NCFgym/assets/factory/mesh/ncf_mug_cupholder/dishrack/dishrack.obj"
+  # path_ndf_code_object: "/private/home/carohiguera/NCF_RL/NCFgym/assets/factory/mesh/ncf_mug_cupholder/obj_assets/16/obj_ndf_code.npy"

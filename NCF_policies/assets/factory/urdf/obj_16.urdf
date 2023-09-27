@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot name="obj_16">
+  <link name="obj_16">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="../mesh/ncf_mug_cupholder/obj_assets/16/obj_collision.obj" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="../mesh/ncf_mug_cupholder/obj_assets/16/obj_collision.obj" scale="1 1 1"/>
+      </geometry>
+      <sdf resolution="512"/>
+    </collision >    
+    <inertial>
+      <mass value="0.102"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+</robot>

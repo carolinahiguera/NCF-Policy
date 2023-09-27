@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="ncf_cupholder">
+  <link name="ncf_cupholder">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+      <geometry>
+        <!-- <mesh filename="../mesh/ncf_mug_cupholder/cupholder/cupholder_v2.obj" scale="0.75 0.75 0.75"/> -->
+        <mesh filename="../mesh/ncf_mug_cupholder/cupholder/cupholder_table.obj" scale="0.9 0.9 0.9"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+      <geometry>
+        <!-- <mesh filename="../mesh/ncf_mug_cupholder/cupholder/cupholder_v2.obj" scale="0.75 0.75 0.75"/> -->
+        <mesh filename="../mesh/ncf_mug_cupholder/cupholder/cupholder_table.obj" scale="0.9 0.9 0.9"/>
+      </geometry>
+      <sdf resolution="256"/>
+    </collision>
+    <!-- <inertial>
+      <mass value="0.102"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial> -->
+  </link>
+</robot>

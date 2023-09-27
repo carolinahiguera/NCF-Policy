@@ -1,0 +1,540 @@
+hydra:
+  run:
+    dir: .
+  sweep:
+    dir: ''
+    subdir: ${hydra.job.num}
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+    params: null
+  help:
+    app_name: ${hydra.job.name}
+    header: '${hydra.help.app_name} is powered by Hydra.
+
+      '
+    footer: 'Powered by Hydra (https://hydra.cc)
+
+      Use --hydra-help to view Hydra specific help
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+    hydra_help: ???
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    root:
+      level: ERROR
+    disable_existing_loggers: true
+  env: {}
+  mode: MULTIRUN
+  searchpath: []
+  callbacks: {}
+  output_subdir: null
+  overrides:
+    hydra:
+    - hydra.mode=MULTIRUN
+    task:
+    - task=NCFTaskMugCupholder
+    - test=True
+    - headless=False
+    - seed=42
+    - launcher=basic
+    - num_envs=20
+    - checkpoint=/media/chiguera/2TB/NCF_v2/outputs_cupholder/proprio_ncf/v1/stage1_nn/best_reward.pth
+    - task.sim.sim_digits=True
+    - task.rl.max_episode_length=250
+    - task.rl.compute_contact_gt=False
+    - task.rl.world_ref_pointcloud=True
+    - task.ncf.ncf_arch=transformer
+    - task.ncf.ncf_epoch=19
+    - train.algo=PPO2
+    - train.ppo.multi_gpu=False
+    - train.ppo.normalize_point_cloud=True
+    - train.ppo.ncf_info=True
+    - train.ppo.ncf_use_gt=False
+    - train.ppo.minibatch_size=512
+    - train.ppo.output_name=cupholder_proprio_ncf_norm/debug
+  job:
+    name: train_cluster
+    chdir: null
+    override_dirname: checkpoint=/media/chiguera/2TB/NCF_v2/outputs_cupholder/proprio_ncf/v1/stage1_nn/best_reward.pth,headless=False,launcher=basic,num_envs=20,seed=42,task.ncf.ncf_arch=transformer,task.ncf.ncf_epoch=19,task.rl.compute_contact_gt=False,task.rl.max_episode_length=250,task.rl.world_ref_pointcloud=True,task.sim.sim_digits=True,task=NCFTaskMugCupholder,test=True,train.algo=PPO2,train.ppo.minibatch_size=512,train.ppo.multi_gpu=False,train.ppo.ncf_info=True,train.ppo.ncf_use_gt=False,train.ppo.normalize_point_cloud=True,train.ppo.output_name=cupholder_proprio_ncf_norm/debug
+    id: ???
+    num: ???
+    config_name: config
+    env_set: {}
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.3.2
+    version_base: '1.1'
+    cwd: /media/chiguera/2TB/NCF_v2
+    config_sources:
+    - path: hydra.conf
+      schema: pkg
+      provider: hydra
+    - path: /media/chiguera/2TB/NCF_v2/NCF_policies/isaacgymenvs/cfg
+      schema: file
+      provider: main
+    - path: ''
+      schema: structured
+      provider: schema
+    output_dir: ???
+    choices:
+      launcher: basic
+      task: NCFTaskMugCupholder
+      train: NCFTaskMugCupholder
+      hydra/env: default
+      hydra/callbacks: null
+      hydra/job_logging: disabled
+      hydra/hydra_logging: default
+      hydra/hydra_help: default
+      hydra/help: default
+      hydra/sweeper: basic
+      hydra/launcher: basic
+      hydra/output: default
+  verbose: false
+task_name: ${task.name}
+num_envs: 20
+seed: 42
+physics_engine: physx
+pipeline: gpu
+sim_device: cuda:0
+rl_device: cuda:0
+graphics_device_id: -1
+num_threads: 4
+solver_type: 1
+num_subscenes: 0
+test: true
+checkpoint: /media/chiguera/2TB/NCF_v2/outputs_cupholder/proprio_ncf/v1/stage1_nn/best_reward.pth
+headless: false
+force_render: true
+user: carohiguera
+outputs_root_dir: outputs_paper
+task:
+  mode:
+    export_scene: false
+    export_states: false
+  sim:
+    dt: 0.016667
+    substeps: 2
+    up_axis: z
+    use_gpu_pipeline: ${eq:${...pipeline},"gpu"}
+    gravity:
+    - 0.0
+    - 0.0
+    - -9.81
+    add_damping: true
+    physx:
+      solver_type: ${....solver_type}
+      num_threads: ${....num_threads}
+      num_subscenes: ${....num_subscenes}
+      use_gpu: ${contains:"cuda",${....sim_device}}
+      num_position_iterations: 16
+      num_velocity_iterations: 0
+      contact_offset: 0.005
+      rest_offset: 0.0
+      bounce_threshold_velocity: 0.2
+      max_depenetration_velocity: 5.0
+      friction_offset_threshold: 0.01
+      friction_correlation_distance: 0.00625
+      max_gpu_contact_pairs: 1048576
+      default_buffer_size_multiplier: 8.0
+      contact_collection: 1
+    disable_gravity: true
+    sim_digits: true
+  env:
+    env_spacing: 0.5
+    franka_depth: 0.5
+    table_height: 0.01
+    franka_friction: 1.0
+    table_friction: 0.3
+    numEnvs: ${resolve_default:128,${...num_envs}}
+    numObservations: 21
+    numActions: 6
+    num_gripper_move_sim_steps: 40
+    num_gripper_close_sim_steps: 50
+  name: NCFTaskMugCupholder
+  physics_engine: ${..physics_engine}
+  randomize:
+    franka_arm_initial_dof_pos:
+    - 0.00871
+    - -0.10368
+    - -0.00794
+    - -1.49139
+    - -0.00083
+    - 1.38774
+    - 0.7861
+    fingertip_midpoint_pos_initial:
+    - 0.0
+    - 0.0
+    - 0.2
+    fingertip_midpoint_pos_noise:
+    - 0.1
+    - 0.1
+    - 0.05
+    fingertip_midpoint_rot_initial:
+    - 3.1416
+    - 0
+    - 3.1416
+    fingertip_midpoint_rot_noise:
+    - 0.3
+    - 0.3
+    - 1
+    nut_noise_pos_in_gripper:
+    - 0.0
+    - 0.0
+    - 0.01
+    nut_noise_rot_in_gripper: 0.17
+    bolt_pos_xy_initial:
+    - 0.0
+    - 0.0
+    bolt_pos_xy_noise:
+    - 0.0
+    - 0.0
+    bolt_pos_z_offset: 0.0
+  ncf:
+    digits_seq_length: 1
+    digits_size: 64
+    ncf_arch: transformer
+    ncf_epoch: 19
+    checkpoint_vae: checkpoints_all/digit_vae/digit_vae.ckpt
+    checkpoint_ncf: checkpoints_all/ncf
+    checkpoint_ndf: checkpoints_all/ndf.pth
+    path_mesh_object: NCF_policies/assets/factory/mesh/ncf_mug_cupholder/obj_assets/1/obj_collision.obj
+    path_pointcloud_object: NCF_policies/assets/factory/mesh/ncf_mug_cupholder/obj_assets/1/obj_pointcloud.npy
+    path_mesh_cupholder: NCF_policies/assets/factory/mesh/ncf_mug_cupholder/cupholder/cupholder_v2.obj
+    path_ndf_code_object: NCF_policies/assets/factory/mesh/ncf_mug_cupholder/obj_assets/1/obj_ndf_code.npy
+  rl:
+    pos_action_scale:
+    - 0.03
+    - 0.03
+    - 0.02
+    rot_action_scale:
+    - 0.1
+    - 0.1
+    - 0.1
+    force_action_scale:
+    - 1.0
+    - 1.0
+    - 1.0
+    torque_action_scale:
+    - 1.0
+    - 1.0
+    - 1.0
+    clamp_rot: true
+    clamp_rot_thresh: 1.0e-06
+    add_obs_bolt_tip_pos: false
+    reduce_obs: true
+    use_keypoints_rew: true
+    num_keypoints: 4
+    keypoint_scale: 0.05
+    keypoint_reward_scale: 1.0
+    action_penalty_scale: 0.0
+    orientation_penalty_scale: 0.0
+    dist_penalty_scale: 0.0
+    max_episode_length: 250
+    close_error_thresh: 0.02
+    away_error_thresh: 0.3
+    success_bonus: 0.0
+    compute_contact_gt: false
+    world_ref_pointcloud: true
+    log_ncf_data: false
+    path_save_ncf_data: /home/chiguera/Documents/NCF/ncf_cupholder_dataset/data_isaacgym/
+    debug_viz: false
+  ctrl:
+    ctrl_type: joint_space_id
+    all:
+      jacobian_type: geometric
+      gripper_prop_gains:
+      - 100
+      - 100
+      gripper_deriv_gains:
+      - 2
+      - 2
+    gym_default:
+      ik_method: dls
+      joint_prop_gains:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      joint_deriv_gains:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      gripper_prop_gains:
+      - 500
+      - 500
+      gripper_deriv_gains:
+      - 20
+      - 20
+    joint_space_ik:
+      ik_method: dls
+      joint_prop_gains:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      joint_deriv_gains:
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+    joint_space_id:
+      ik_method: dls
+      joint_prop_gains:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      joint_deriv_gains:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+    task_space_impedance:
+      motion_ctrl_axes:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      task_prop_gains:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      task_deriv_gains:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+    operational_space_motion:
+      motion_ctrl_axes:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      task_prop_gains:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      task_deriv_gains:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+    open_loop_force:
+      force_ctrl_axes:
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+    closed_loop_force:
+      force_ctrl_axes:
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      wrench_prop_gains:
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+    hybrid_force_motion:
+      motion_ctrl_axes:
+      - 1
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      task_prop_gains:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      task_deriv_gains:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+      force_ctrl_axes:
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      wrench_prop_gains:
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+      - 0.1
+train:
+  seed: ${..seed}
+  algo: PPO2
+  network:
+    mlp:
+      units:
+      - 256
+      - 128
+      - 64
+    tactile_mlp:
+      units:
+      - 256
+      - 64
+    ncf_mlp:
+      units:
+      - 256
+      - 128
+    ncf_adapt_mlp:
+      units:
+      - 256
+      - 128
+      - 128
+  load_path: ${..checkpoint}
+  ppo:
+    output_name: cupholder_proprio_ncf_norm/debug
+    multi_gpu: false
+    normalize_input: true
+    normalize_value: true
+    normalize_point_cloud: true
+    value_bootstrap: true
+    num_actors: ${...task.env.numEnvs}
+    normalize_advantage: true
+    gamma: 0.99
+    tau: 0.95
+    learning_rate: 0.0001
+    kl_threshold: 0.0016
+    horizon_length: 64
+    minibatch_size: 512
+    mini_epochs: 8
+    clip_value: true
+    critic_coef: 2
+    entropy_coef: 0.0
+    e_clip: 0.2
+    bounds_loss_coef: 0.0
+    truncate_grads: false
+    grad_norm: 1.0
+    save_best_after: 0
+    save_frequency: 10
+    max_agent_steps: 5000000
+    tactile_info: false
+    tactile_seq_length: 5
+    tactile_info_embed_dim: 64
+    ncf_info: true
+    ncf_use_gt: false
+    ncf_output_dim: 2000
+    ncf_pc_subsample: 1.0
+    ncf_proprio_adapt: false
