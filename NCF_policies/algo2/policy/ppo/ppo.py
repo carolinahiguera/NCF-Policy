@@ -986,8 +986,8 @@ def load_ncf(
     path_checkpoint_ncf,
     device_sim,
 ):
-    from algo2.ncf.ncf.ncf_mlp import NCF as NCF_mlp
-    from algo2.ncf.ncf.ncf_transformer import NCF as NCF_transformer
+    from algo2.ncf.contact_regressor.ncf_mlp import NCF as NCF_mlp
+    from algo2.ncf.contact_regressor.ncf_transformer import NCF as NCF_transformer
     from algo2.ncf.config.config import NCF_Params
     from algo2.ncf.pipeline import NCF_Pipeline
 

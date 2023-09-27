@@ -1,15 +1,11 @@
 from typing import Any
 import pytorch_lightning as pl
-# from pytorch3d.loss import chamfer_distance
-# from pytorch3d.ops import knn_points
 import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
 import matplotlib.pyplot as plt
 import cv2
 import numpy as np
-
-# from utils.viz_3d import Viz3d
 
 DEBUG = False
 
@@ -29,12 +25,6 @@ class NCF_Pipeline(pl.LightningModule):
         self.mse_loss = nn.MSELoss(reduction="none")
         self.bce_loss = nn.BCELoss(reduction="none")
         self.l1_loss = nn.L1Loss(reduction="none")
-
-        # if DEBUG:
-        #     self.viz3d = Viz3d(cfg.viz3d_params)
-
-    # def configure_optimizers(self):
-    #     return torch.optim.Adam(self.parameters(), lr=self.cfg.lr)
 
     def configure_optimizers(self):
         # Using a scheduler is optional but can be helpful.
@@ -62,8 +52,7 @@ class NCF_Pipeline(pl.LightningModule):
                 "scheduler": scheduler,
             },
         }
-        # return {"optimizer": optimizer, "monitor": "val_loss"}
-
+       
     def _get_digit_embeddings(self, images):
         batch_size = images.shape[0]
         seq_len = images.shape[1]
@@ -106,36 +95,7 @@ class NCF_Pipeline(pl.LightningModule):
             ).mean()
         )
         return loss
-
-    # def compute_loss_pc(self, gt, pred, batch):
-    #     gt = gt.squeeze()
-    #     pred = pred.squeeze()
-    #     idx_query = batch["idx_query"].squeeze()
-    #     pc_obj = batch["ref_point_cloud"].squeeze()
-    #     idx_query_gt = idx_query[gt >= 0.1]
-    #     idx_query_pred = idx_query[pred >= 0.1]
-    #     pc_gt = pc_obj[idx_query_gt].unsqueeze(dim=0)
-    #     pc_pred = pc_obj[idx_query_pred].unsqueeze(dim=0)
-
-    #     if pc_gt.shape[1] > 0 and pc_pred.shape[1] > 0:
-    #         gt2pred = knn_points(
-    #             pc_gt, pc_pred, lengths1=None, lengths2=None, K=1, return_nn=True
-    #         )
-    #         gt2pred_dist = gt2pred.dists.sqrt()[:, :, 0]
-
-    #         pred2gt = knn_points(
-    #             pc_pred, pc_gt, lengths1=None, lengths2=None, K=1, return_nn=True
-    #         )
-    #         pred2gt_dist = pred2gt.dists.sqrt()[:, :, 0]
-
-    #         # loss = (gt2pred_dist.max() + pred2gt_dist.max()) / 2.0
-    #         loss = torch.max(pred2gt_dist.max(), gt2pred_dist.max())
-    #     elif pc_gt.shape[1] == 0 and pc_pred.shape[1] == 0:
-    #         loss = torch.tensor(0.0).to(pred.device)
-    #     else:
-    #         loss = torch.tensor(0.08).to(pred.device)
-    #     return loss
-
+  
     def compute_loss(self, pred, batch):
         gt = batch["p_contact_oe_t0"]
 
@@ -159,13 +119,7 @@ class NCF_Pipeline(pl.LightningModule):
         embs_right = batch["digits_emb_right"]
         ndf_point_cloud = batch["ndf_point_cloud"]
         ndf_query_point_cloud = batch["ndf_query_point_cloud"]
-        # contact_oe_t1 = batch["p_contact_oe_t1"]
-        # contact_oe_t2 = batch["p_contact_oe_t2"]
-
-        # get digit embeddings
-        # embs_left, images_hat_left = self._get_digit_embeddings(images_left)
-        # embs_right, images_hat_right = self._get_digit_embeddings(images_right)
-
+       
         # get ndf embeddings
         ndf_input = {}
         ndf_input["coords"] = ndf_query_point_cloud
@@ -179,8 +133,6 @@ class NCF_Pipeline(pl.LightningModule):
             "ee_pose_1": batch["ee_pose_1"],
             "ee_pose_2": batch["ee_pose_2"],
             "emb_ndf": out_ndf["features"],
-            # "contact_oe_t1": contact_oe_t1,
-            # "contact_oe_t2": contact_oe_t2,
         }
 
         pred_contact = self.ncf(inputs_ncf)
@@ -194,33 +146,10 @@ class NCF_Pipeline(pl.LightningModule):
 
         return pred_contact
 
-    def plot_contact(self, pred_contact, batch, interactive):
-        idx = 0
-        gt = batch["p_contact_oe_t0"][idx].cpu().numpy()
-        idx_query = batch["idx_query"][idx].cpu().numpy()
-        pred = pred_contact[idx].detach().cpu().numpy()
-        pc = np.load(self.cfg.objects_assets + "/mug_pc.npy")
-
-        gt_full = np.zeros((pc.shape[0]))
-        gt_full[idx_query] = gt
-        pred_full = np.zeros((pc.shape[0]))
-        pred_full[idx_query] = pred
-
-        gt_img = self.viz3d.show_obj_probabilities(pc, gt_full, interactive)
-
-        if not interactive:
-            pred_img = self.viz3d.show_obj_probabilities(pc, pred_full)
-            img = cv2.hconcat([gt_img, pred_img])
-            plt.imshow(img)
-            plt.show()
-
     def training_step(self, batch, batch_idx):
         out_ncf = self.forward(batch)
         pred_contact_oe = out_ncf["pred_contact"]
         loss = self.compute_loss(pred_contact_oe, batch)
-        # print(loss.item())
-        if DEBUG:
-            self.plot_contact(pred_contact_oe, batch, interactive=DEBUG)
         self.log(
             "train_loss", loss, on_step=True, on_epoch=True, prog_bar=False, logger=True
         )

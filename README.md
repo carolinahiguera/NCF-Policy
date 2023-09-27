@@ -1,8 +1,25 @@
-# NCF-Policy
+<h1 align="center">
+  NCF-Policy
+</h1>
+<h2 align="center">
+  Perceiving Extrinsic Contacts from Touch Improves Learning Insertion Policies
+</h2>
+
+<div align="center">
+  <a href="https://carolinahiguera.github.io/">Carolina Higuera</a> &nbsp;•&nbsp;
+  <a href="https://joeaortiz.github.io/">Joseph Ortiz</a> &nbsp;•&nbsp;
+  <a href="https://haozhi.io/">Haozhi Qi</a> &nbsp;•&nbsp;
+  <a href="https://scholar.google.com/citations?user=rebEn8oAAAAJ&hl=en">Luis Pineda</a> &nbsp;&nbsp; <br/>
+  <a href="https://homes.cs.washington.edu/~bboots/">Byron Boots</a> &nbsp;•&nbsp;
+  <a href="https://www.mustafamukadam.com/">Mustafa Mukadam</a>
+  <br/>
+  <br/>
+</div>
+
 
 <p align="center">
     <a href="">Paper</a> |
-    <a href="https://youtu.be/yE-R8QIRqlI">Video</a>
+    <a href="https://youtu.be/rG_xIfQ6-_k">Video</a>
 </p>
 
 Prior work on Neural Contact Fields (NCF) use *intrinsic* tactile sensing between gripper and object to estimate *extrinsic* contacts in simulation. However, its effectiveness and utility in real-world tasks remains unknown.
@@ -15,7 +32,7 @@ In this work, we improve NCF to enable sim-to-real transfer and use it to train 
 
 -----
 ## NCF-v2 sim-to-real
-Our work builds on Neural Contact Fields [(NCF_v1)](https://github.com/carolinahiguera/NCF) and improves it on several fronts to enable sim-to-real transfer.
+Our work builds on Neural Contact Fields [(NCF-v1)](https://github.com/carolinahiguera/NCF) and improves it on several fronts to enable sim-to-real transfer.
 
 Our NCF-v2 is able to track extrinsic contacts from touch, generalizing to unseen shapes and environments.
 <p align="center">
@@ -90,9 +107,10 @@ NCF-policy/
     ncf/
         vae/
         ndf/
-        ncf/
+        contact_regressor/
+        pipeline.py
 ```
-For data generation and training procedures, you can follow the same steps for [(NCF_v1)](https://github.com/carolinahiguera/NCF).
+For data generation and training procedures, you can follow the same steps for [(NCF-v1)](https://github.com/carolinahiguera/NCF).
 
 -----
 
@@ -143,6 +161,9 @@ If you find NCF-v2 or this codebase helpful in your research, please consider ci
 ```bash
 
 ```
+
+## License
+The majority of NCF-v2 is licensed under MIT license, however portions of the project are available under separate license terms. Pytorch-lightning is under Apache License 2.0. IsaacGymEnvs is licensed under the BSD 3-clause license.  See [LICENSE](https://github.com/carolinahiguera/NCF-Policy/blob/main/LICENSE) for details.
 
 ## Acknowledgements
 
