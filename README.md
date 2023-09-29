@@ -18,7 +18,7 @@
 
 
 <p align="center">
-    <a href="">Paper</a> |
+    <a href="https://arxiv.org/abs/2309.16652">Paper</a> |
     <a href="https://youtu.be/rG_xIfQ6-_k">Video</a>
 </p>
 
@@ -159,7 +159,14 @@ For data generation and training procedures, you can follow the same steps for [
 ## Citing
 If you find NCF-v2 or this codebase helpful in your research, please consider citing:
 ```bash
-
+@misc{higuera2023perceiving,
+      title={Perceiving Extrinsic Contacts from Touch Improves Learning Insertion Policies}, 
+      author={Carolina Higuera and Joseph Ortiz and Haozhi Qi and Luis Pineda and Byron Boots and Mustafa Mukadam},
+      year={2023},
+      eprint={2309.16652},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
+}
 ```
 
 ## License
