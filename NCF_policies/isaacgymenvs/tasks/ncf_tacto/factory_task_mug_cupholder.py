@@ -26,10 +26,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Factory: Class for nut-bolt place task.
+"""Class for mug-in-cupholder task.
 
-Inherits nut-bolt environment class and abstract task class (not enforced). Can be executed with
-python train.py task=FactoryTaskNutBoltPlace
+Inherits nut-bolt environment class and abstract task class (not enforced).
 """
 
 import time

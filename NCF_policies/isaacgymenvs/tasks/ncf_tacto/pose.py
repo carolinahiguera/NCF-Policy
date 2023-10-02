@@ -3,6 +3,10 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+# Extension of Hora policy to tactile sensing with the DIGIT
+# Authors: Haozhi Qi, Sudharshan Suresh
+# --------------------------------------------------------
+
 """
     SE(3) pose utilities 
 """

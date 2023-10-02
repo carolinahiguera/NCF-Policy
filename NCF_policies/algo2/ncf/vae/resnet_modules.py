@@ -45,8 +45,6 @@ def conv3x3(in_planes, out_planes, stride=1):
 
 
 class EncoderBlock(nn.Module):
-    """ResNet block, copied from https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py#L35."""
-
     expansion = 1
 
     def __init__(self, inplanes, planes, stride=1, downsample=None):
@@ -78,8 +76,6 @@ class EncoderBlock(nn.Module):
 
 
 class DecoderBlock(nn.Module):
-    """ResNet block, but convs replaced with resize convs, and channel increase is in second conv, not first."""
-
     expansion = 1
 
     def __init__(self, inplanes, planes, scale=1, upsample=None):

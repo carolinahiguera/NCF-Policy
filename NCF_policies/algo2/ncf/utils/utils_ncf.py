@@ -32,63 +32,6 @@ class NCF_dataloader:
         )
         self.n_points = len(self.ncf_point_cloud)
 
-    # def get_ee_data(self, ee_poses):
-    #     num_envs = ee_poses.shape[0]
-    #     ee_poses = ee_poses.cpu().numpy()
-    #     ee_t1 = np.zeros((num_envs, 7))
-    #     ee_t2 = np.zeros((num_envs, 7))
-
-    #     for i in range(num_envs):
-    #         ee_seq = ee_poses[i]
-    #         r0 = R.from_quat(ee_seq[4][3:]).as_matrix()
-    #         r1 = R.from_quat(ee_seq[3][3:]).as_matrix()
-    #         r2 = R.from_quat(ee_seq[2][3:]).as_matrix()
-    #         q_t_1 = R.from_matrix(np.matmul(r0, r1.T)).as_quat()
-    #         q_t_2 = R.from_matrix(np.matmul(r0, r2.T)).as_quat()
-    #         t_t_1 = ee_seq[0][0:3] - ee_seq[1][0:3]
-    #         t_t_2 = ee_seq[0][0:3] - ee_seq[2][0:3]
-    #         ee_t1[i] = np.concatenate((t_t_1, q_t_1))
-    #         ee_t2[i] = np.concatenate((t_t_2, q_t_2))
-
-    #         ee_poses[i][:, 0:3] = ee_poses[i][:, 0:3] / EEF_MAX
-    #         ee_t1[i][0:3] = ee_t1[i][0:3] / DELTA_EEF_MAX
-    #         ee_t1[i][3:] = ee_t1[i][3:] / DELTA_QUAT_MAX
-    #         ee_t2[i][0:3] = ee_t2[i][0:3] / DELTA_EEF_MAX
-    #         ee_t2[i][3:] = ee_t2[i][3:] / DELTA_QUAT_MAX
-
-    #     ee_poses = torch.tensor(ee_poses, dtype=torch.float32)
-    #     ee_t1 = torch.tensor(ee_t1, dtype=torch.float32)
-    #     ee_t2 = torch.tensor(ee_t2, dtype=torch.float32)
-
-    #     return ee_poses, ee_t1, ee_t2
-
-    # def get_ndf_inputs(self, ee_quat):
-    #     num_envs = ee_quat.shape[0]
-    #     ref_point_cloud = np.load(self.path_point_cloud_obj)
-
-    #     n = len(ref_point_cloud)
-    #     n_query_pts = int(n * self.pc_subsample)
-    #     idx_points = np.arange(n)
-
-    #     point_cloud = ref_point_cloud - np.mean(ref_point_cloud, axis=0)
-    #     ndf_point_cloud = torch.from_numpy(point_cloud).float()
-    #     ndf_query_point_cloud = torch.zeros((num_envs, n_query_pts, 3))
-
-    #     # transformation of point cloud
-    #     rot_mat = (
-    #         torch_util.quaternion_to_angle_axis(ee_quat).unsqueeze(dim=0).squeeze()
-    #     )
-    #     rot_mat = torch_util.angle_axis_to_rotation_matrix(rot_mat)
-    #     rot_mat = rot_mat.squeeze().float()
-
-    #     for i in range(num_envs):
-    #         pc = torch_util.transform_pcd_torch(ndf_point_cloud, rot_mat[i])
-
-    #         # 2. Subsample
-    #         idx_query = np.random.choice(idx_points, size=n_query_pts)
-    #         ndf_query_point_cloud[i] = pc[idx_query]
-
-    #     return ndf_point_cloud, ndf_query_point_cloud
 
     def get_ee_sequence(self, ee_poses):
         num_envs = ee_poses.shape[0]
@@ -169,44 +112,6 @@ class NCF_dataloader:
         )
 
         return ndf_point_cloud, ncf_query_points, idx_query
-
-    # def get_point_cloud_object(self, ee_quat):
-    #     num_envs = ee_quat.shape[0]
-    #     ee_quat = ee_quat[:, [1, 2, 3, 0]]
-    #     ref_point_cloud = np.load(self.data_point_cloud_obj)
-
-    #     ndf_point_cloud_envs = np.zeros((num_envs, len(ref_point_cloud), 3))
-    #     ndf_query_point_cloud_envs = np.zeros((num_envs, len(ref_point_cloud), 3))
-
-    #     for i in range(num_envs):
-    #         # transformation of point cloud
-    #         rot_mat = torch_util.quaternion_to_angle_axis(ee_quat[i]).unsqueeze(dim=0)
-    #         rot_mat = torch_util.angle_axis_to_rotation_matrix(rot_mat)
-    #         rot_mat = rot_mat.squeeze().float()
-
-    #         n = len(ref_point_cloud)
-    #         point_cloud = ref_point_cloud - np.mean(ref_point_cloud, axis=0)
-
-    #         ndf_point_cloud = torch.from_numpy(point_cloud).float()
-    #         ndf_point_cloud = torch_util.transform_pcd_torch(ndf_point_cloud, rot_mat)
-
-    #         # 2. Subsample
-    #         idx_points = np.arange(n)
-    #         # n_query_pts = int(n * self.cfg.pc_subsample)
-    #         # idx_query = np.random.choice(idx_points, size=n_query_pts)
-    #         idx_query = idx_points
-    #         ndf_query_point_cloud = ndf_point_cloud[idx_query]
-
-    #         # ref_point_cloud = torch.tensor(ref_point_cloud, dtype=torch.float32)
-    #         ndf_point_cloud_envs[i] = ndf_point_cloud
-    #         ndf_query_point_cloud_envs[i] = ndf_query_point_cloud
-
-    #     ndf_point_cloud_envs = torch.tensor(ndf_point_cloud_envs, dtype=torch.float32)
-    #     ndf_query_point_cloud_envs = torch.tensor(
-    #         ndf_query_point_cloud_envs, dtype=torch.float32
-    #     )
-
-    #     return ndf_point_cloud_envs, ndf_query_point_cloud_envs
 
 
 import trimesh

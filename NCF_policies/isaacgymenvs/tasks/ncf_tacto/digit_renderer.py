@@ -1,3 +1,10 @@
+# --------------------------------------------------------
+# Monte-Carlo inference over distributions across sliding touch 
+# https://arxiv.org/abs/2210.14210
+# https://github.com/facebookresearch/MidasTouch
+# Sudharshan Suresh, Zilin Si, Stuart Anderson, Michael Kaess, Mustafa Mukadam
+# --------------------------------------------------------
+
 from os import path as osp
 import numpy as np
 import tacto
@@ -6,12 +13,7 @@ import cv2
 
 import torch
 from scipy.spatial.transform import Rotation as R
-
 import trimesh
-
-# import torch
-# import hydra
-# from omegaconf import DictConfig
 import random
 
 DEBUG = False

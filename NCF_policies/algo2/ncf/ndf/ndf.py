@@ -1,3 +1,10 @@
+# --------------------------------------------------------
+# Neural Descriptor Fields: SE(3)-Equivariant Object Representations for Manipulation
+# https://arxiv.org/abs/2112.05124
+# Anthony Simeonov, Yilun Du, Andrea Tagliasacchi, Joshua B. Tenenbaum, Alberto Rodriguez, 
+# Pulkit Agrawal, Vincent Sitzmann
+# --------------------------------------------------------
+
 import torch
 import torch.nn as nn
 

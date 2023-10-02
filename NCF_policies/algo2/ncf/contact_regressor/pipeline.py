@@ -1,8 +1,6 @@
 from typing import Any
 import pytorch_lightning as pl
 
-# from pytorch3d.loss import chamfer_distance
-# from pytorch3d.ops import knn_points
 import torch
 import torch.nn as nn
 from torchvision.utils import make_grid
@@ -159,38 +157,6 @@ class NCF_Pipeline(pl.LightningModule):
         )
         return loss
 
-    def compute_loss_pc(self, gt, pred, batch):
-        pc_obj = np.load(batch["pc_file"])
-        pc_obj = torch.tensor(pc_obj, dtype=torch.float32).to(gt.device)
-
-        gt = gt.squeeze()
-        pred = pred.squeeze()
-        idx_query = batch["idx_query"].squeeze()
-        # pc_obj = batch["ref_point_cloud"].squeeze()
-        idx_query_gt = idx_query[gt >= 0.1]
-        idx_query_pred = idx_query[pred >= 0.1]
-        pc_gt = pc_obj[idx_query_gt].unsqueeze(dim=0)
-        pc_pred = pc_obj[idx_query_pred].unsqueeze(dim=0)
-
-        if pc_gt.shape[1] > 0 and pc_pred.shape[1] > 0:
-            gt2pred = knn_points(
-                pc_gt, pc_pred, lengths1=None, lengths2=None, K=1, return_nn=True
-            )
-            gt2pred_dist = gt2pred.dists.sqrt()[:, :, 0]
-
-            pred2gt = knn_points(
-                pc_pred, pc_gt, lengths1=None, lengths2=None, K=1, return_nn=True
-            )
-            pred2gt_dist = pred2gt.dists.sqrt()[:, :, 0]
-
-            # loss = (gt2pred_dist.max() + pred2gt_dist.max()) / 2.0
-            loss = torch.max(pred2gt_dist.max(), gt2pred_dist.max())
-        elif pc_gt.shape[1] == 0 and pc_pred.shape[1] == 0:
-            loss = torch.tensor(0.0).to(pred.device)
-        else:
-            loss = torch.tensor(0.08).to(pred.device)
-        return loss
-
     def compute_loss(self, pred, batch):
         gt = batch["p_contact_t0"]
 
@@ -215,12 +181,6 @@ class NCF_Pipeline(pl.LightningModule):
         # get digit embeddings
         embs_left, images_hat_left = self._get_digit_embeddings(images_left)
         embs_right, images_hat_right = self._get_digit_embeddings(images_right)
-
-        # get ndf embeddings
-        # ndf_input = {}
-        # ndf_input["coords"] = ndf_query_point_cloud
-        # ndf_input["point_cloud"] = ndf_point_cloud
-        # out_ndf = self.ndf(ndf_input)
 
         with torch.no_grad():
             shape_emb = self.ndf(ndf_point_cloud)

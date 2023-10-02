@@ -12,8 +12,6 @@ import hydra
 from termcolor import cprint
 
 from isaacgymenvs.utils.rlgames_utils import multi_gpu_get_rank
-
-# from isaacgymenvs.pbt.pbt import PbtAlgoObserver, initial_pbt_check
 from omegaconf import DictConfig, OmegaConf
 from hydra.utils import to_absolute_path
 from isaacgymenvs.tasks import isaacgym_task_map
@@ -23,11 +21,7 @@ import gym
 from isaacgymenvs.utils.reformat import omegaconf_to_dict, print_dict
 from isaacgymenvs.utils.utils import set_np_formatting, set_seed
 
-# from algo.policy.ppo.ppo import PPO
-# from algo.policy.padapt.padapt import ProprioAdapt
 from algo2.policy.ppo.ppo import PPO as PPO2
-# from algo2.policy.padapt.padapt import ProprioAdapt as ProprioAdapt2
-
 import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -66,9 +60,6 @@ def run(cfg: DictConfig, config_path: Optional[str] = None):
         rank = -1
         cfg.seed = set_seed(cfg.seed)
 
-    # sets seed. if seed is -1 will pick a random one
-    # cfg.seed = set_seed(cfg.seed, torch_deterministic=cfg.torch_deterministic, rank=global_rank)
-
     cprint("Start Building the Environment", "green", attrs=["bold"])
 
     envs = isaacgym_task_map[cfg.task_name](
@@ -91,26 +82,9 @@ def run(cfg: DictConfig, config_path: Optional[str] = None):
         assert cfg.train.load_path
         agent.restore_test(cfg.train.load_path)
         agent.test()
-        # sim_timer = cfg.task.env.sim_timer
-        # num_trials = 3
-        # cprint(f"Running simulation for {num_trials} trials", "green", attrs=["bold"])
-        # thread_stop = threading.Event()
-        # agent.restore_test(cfg.train.load_path)
-        # sim_thread = threading.Thread(
-        #     name="agent.test()", target=agent.test, args=[thread_stop]
-        # )
-        # threading.Thread(
-        #     name="sim_time", target=agent.play_games, args=[thread_stop, num_trials]
-        # ).start()
-
-        # sim_thread.start()
-        # sim_thread.join()
-        # cprint(f"Simulation terminated", "green", attrs=["bold"])
     else:
         if rank <= 0:
             date = str(datetime.now().strftime("%m%d%H"))
-            # print(git_diff_config('./'))
-            # os.system(f'git diff HEAD > {output_dif}/gitdiff.patch')
             with open(os.path.join(output_dif, f"config_{date}.yaml"), "w") as f:
                 f.write(OmegaConf.to_yaml(cfg))
 

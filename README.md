@@ -18,7 +18,7 @@
 
 
 <p align="center">
-    <a href="">Paper</a> |
+    <a href="https://arxiv.org/abs/2309.16652">Paper</a> |
     <a href="https://youtu.be/rG_xIfQ6-_k">Video</a>
 </p>
 
@@ -159,7 +159,14 @@ For data generation and training procedures, you can follow the same steps for [
 ## Citing
 If you find NCF-v2 or this codebase helpful in your research, please consider citing:
 ```bash
-
+misc{higuera2023perceiving,
+      title={Perceiving Extrinsic Contacts from Touch Improves Learning Insertion Policies}, 
+      author={Carolina Higuera and Joseph Ortiz and Haozhi Qi and Luis Pineda and Byron Boots and Mustafa Mukadam},
+      year={2023},
+      eprint={2309.16652},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
+}
 ```
 
 ## License
@@ -167,4 +174,8 @@ The majority of NCF-v2 is licensed under MIT license, however portions of the pr
 
 ## Acknowledgements
 
-We use the implementation provided in the [neural descriptor fields repo](https://github.com/anthonysimeonov/ndf_robot). For implementing the insertion tasks, we use as reference the Factory environments available in the [IsaacGymEnvs](https://github.com/NVIDIA-Omniverse/IsaacGymEnvs/tree/main) repo. As for the RL method, we use the PPO implementation available in the codebase of the [Hora](https://github.com/HaozhiQi/hora) project. We encourage you to check out those projects!
+We use the implementation provided in the [neural descriptor fields repo](https://github.com/anthonysimeonov/ndf_robot). For implementing the insertion tasks, we use as reference the Factory environments available in the [IsaacGymEnvs](https://github.com/NVIDIA-Omniverse/IsaacGymEnvs/tree/main) repo. As for the RL method, we use the PPO implementation available in the codebase of the [Hora](https://github.com/HaozhiQi/hora) project. 
+
+For TACTO intergration, we reference from the [Hora-Tactile](https://haozhi.io/rotateit/) and [MidasTouch](https://github.com/facebookresearch/MidasTouch) projects.
+
+We encourage you to check out all these projects!
